@@ -27,6 +27,21 @@ public class Main {
             else if(str[0].equals("remove-user")){
                 center.remove_user(str[1],str[2],str[3]);
             }
+            else if(str[0].equals("add-book")){
+                center.add_book(str[1],str[2],str[3],str[4],str[5],str[6],str[7],str[8],str[9],str[10]);
+            }
+            else if(str[0].equals("add-thesis")){
+                center.add_thesis(str[1],str[2],str[3],str[4],str[5],str[6],str[7],str[8],str[9]);
+            }
+            else if(str[0].equals("add-ganjineh-book")){
+                center.add_ganjineh(str[1],str[2],str[3],str[4],str[5],str[6],str[7],str[8],str[9],str[10]);
+            }
+            else if(str[0].equals("add-selling-book")){
+                center.add_sellingBook(str[1],str[2],str[3],str[4],str[5],str[6],str[7],str[8],str[9],str[10],str[11],str[12]);
+            }
+            else if(str[0].equals("remove-resource")){
+                center.remove_resource(str[1],str[2],str[3],str[4]);
+            }
 
 
 
@@ -40,6 +55,203 @@ public class Main {
 
    }
 }
+
+
+/**
+ *  TEST CASE 2
+ */
+
+/*
+
+add-library#admin|AdminPass|L001|Central Library|1340|60|AUT Saboori
+add-library#admin|AdminPass|L002|AUT CE Library|1389|30|AUT CE
+add-category#admin|AdminPass|C001|Computer|null
+add-category#admin|AdminPass|C002|Computer Science|C001
+add-category#admin|AdminPass|C003|Computer Engineering|C001
+add-student#admin|AdminPass|9731085|passWORD|Student1 Name|Student1 Family|0123456789|1379|Tehran, Saadat Abad
+add-student#admin|AdminPass|9831080|1234$%!|Student2 Name|Student2 Family|0123456777|1383|Tehran, Hafte Tir
+add-staff#admin|AdminPass|1131001|MyPass|Staff1Name|Staff1Family|0123446789|1360|Tehran, Azadi|staff
+add-staff#admin|AdminPass|1131002|AAAA|Staff2Name|Staff2Family|0123556789|1365|Tehran, Tajrish|staff
+add-staff#admin|AdminPass|1131003|Korosu|Prof1Name|Prof1Family|0123336789|1350|Tehran, Velenjak|professor
+add-staff#admin|AdminPass|1131004|123456|Prof2Name|Prof2Family|0121116789|1340|Tehran, Gholhak|professor
+add-manager#admin|AdminPass|0010001|Man*&@|Manager1Name|Manager1Family|0128886789|1345|Tehran, Tajrish|L001
+add-manager#admin|AdminPass|0010002|knB123|Manager2Name|Manager2Family|0129996789|1342|Tehran, Vanak|L002
+add-book#someone|Man*&@|B001|Introduction to Java|Author1|Springer1|2021|5|C001|L001
+add-book#0010001|WrongPass|B001|Introduction to Java|Author1|Publisher1|2021|5|C001|L001
+add-book#0010001|Man*&@|B001|Introduction to Java|Author1|Publisher1|2021|5|C001|L004
+add-book#0010001|Man*&@|B001|Introduction to Java|Author1|Publisher1|2021|5|C004|L001
+add-book#0010001|Man*&@|B001|Introduction to Java|Author1|Publisher1|2021|5|C001|L001
+add-book#0010001|Man*&@|B002|Data Structures and Algorithms Made Easy|Author2|Publisher2|2014|6|C002|L001
+add-book#0010001|Man*&@|B003|Advanced Software Engineering Techniques|Author3|Publisher3|2016|2|C003|L001
+add-book#0010002|knB123|B001|Advanced Software Engineering Techniques|Author3|Publisher3|2016|3|C003|L002
+add-book#0010002|knB123|B002|Computer Networks|Author4|Publisher4|2016|6|C003|L002
+add-book#0010002|knB123|B003|Startup Development Techniques|Author5|Publisher5|2014|5|null|L002
+add-thesis#someone|Man*&@|T01|Thesis1|Student1Name|Professor1Name|1399|C002|L001
+add-thesis#0010001|WrongPass|T01|Thesis1|Student1Name|Professor1Name|1399|C002|L001
+add-thesis#0010001|Man*&@|T01|Thesis1|Student1Name|Professor1Name|1399|C002|L004
+add-thesis#0010001|Man*&@|T01|Thesis1|Student1Name|Professor1Name|1399|C004|L001
+add-thesis#0010001|Man*&@|T01|Thesis1|Student1Name|Professor1Name|1399|C002|L001
+add-thesis#0010001|Man*&@|T02|Thesis2|Student2Name|Professor2Name|1400|C003|L001
+add-thesis#0010002|knB123|T01|Thesis3|Student3Name|Professor3Name|1398|null|L002
+add-ganjineh-book#someone|Man*&@|B004|GanjinehBook1|Author5|Publisher5|2003|Mr.Mashhadi|C002|L001
+add-ganjineh-book#0010001|WrongPass|B004|GanjinehBook1|Author5|Publisher5|2003|Mr.Mashhadi|C002|L001
+add-ganjineh-book#0010001|Man*&@|B004|GanjinehBook1|Author5|Publisher5|2003|Mr.Mashhadi|C002|L004
+add-ganjineh-book#0010001|Man*&@|B004|GanjinehBook1|Author5|Publisher5|2003|Mr.Mashhadi|C004|L001
+add-ganjineh-book#0010001|Man*&@|B004|GanjinehBook1|Author5|Publisher5|2003|Mr.Mashhadi|C002|L001
+add-ganjineh-book#0010001|Man*&@|B005|GanjinehBook2|Author6|Publisher6|2005|null|null|L001
+add-ganjineh-book#0010002|knB123|B004|GanjinehBook3|Author7|Publisher7|2001|null|C003|L002
+add-selling-book#someone|Man*&@|B006|Introduction to Python|Author8|Publisher8|2016|40|50000|20|C001|L001
+add-selling-book#0010001|WrongPass|B006|Introduction to Python|Author8|Publisher8|2016|40|50000|20|C001|L001
+add-selling-book#0010001|Man*&@|B006|Introduction to Python|Author8|Publisher8|2016|40|50000|20|C001|L004
+add-selling-book#0010001|Man*&@|B006|Introduction to Python|Author8|Publisher8|2016|40|50000|20|C004|L001
+add-selling-book#0010001|Man*&@|B006|Introduction to Python|Author8|Publisher8|2016|40|50000|20|C001|L001
+add-selling-book#0010002|knB123|B005|Introduction to Python|Author8|Publisher8|2016|40|50000|20|C001|L002
+add-book#0010001|Man*&@|B001|Introduction to Java|Author1|Publisher1|2021|5|C001|L001
+add-book#0010002|knB123|B001|Advanced Software Engineering Techniques|Author3|Publisher3|2016|3|C003|L002
+add-thesis#0010001|Man*&@|T01|Thesis1|Student1Name|Professor1Name|1399|C002|L001
+add-thesis#0010002|knB123|T01|Thesis3|Student3Name|Professor3Name|1398|null|L002
+add-ganjineh-book#0010001|Man*&@|B004|GanjinehBook1|Author5|Publisher5|2003|Mr.Mashhadi|C002|L001
+add-ganjineh-book#0010002|knB123|B004|GanjinehBook3|Author7|Publisher7|2001|null|C003|L002
+add-selling-book#0010001|Man*&@|B006|Introduction to Python|Author8|Publisher8|2016|40|50000|20|C001|L001
+add-selling-book#0010002|knB123|B005|Introduction to Python|Author8|Publisher8|2016|40|50000|20|C001|L002
+add-book#0010002|knB123|B007|SomeBook|SomeAuthor|SomePublisher|2021|5|C001|L001
+add-book#9731085|passWORD|B007|SomeBook|SomeAuthor|SomePublisher|2021|5|C001|L001
+add-book#1131001|MyPass|B007|SomeBook|SomeAuthor|SomePublisher|2021|5|C001|L001
+add-book#1131003|Korosu|B007|SomeBook|SomeAuthor|SomePublisher|2021|5|C001|L001
+add-book#0010001|Man*&@|B006|SomeBook|SomeAuthor|SomePublisher|2021|5|C001|L002
+add-thesis#0010002|knB123|T03|SomeThesis|SomeStudentName|SomeProfessorName|1399|C002|L001
+add-thesis#9731085|passWORD|T03|SomeThesis|SomeStudentName|SomeProfessorName|1399|C002|L001
+add-thesis#1131001|MyPass|T03|SomeThesis|SomeStudentName|SomeProfessorName|1399|C002|L001
+add-thesis#1131003|Korosu|T03|SomeThesis|SomeStudentName|SomeProfessorName|1399|C002|L001
+add-thesis#0010001|Man*&@|T02|SomeThesis|SomeStudentName|SomeProfessorName|1399|C002|L002
+add-ganjineh-book#0010002|knB123|B007|SomeGanjinehBook|SomeAuthor|SomePublisher|2003|null|C002|L001
+add-ganjineh-book#9731085|passWORD|B007|SomeGanjinehBook|SomeAuthor|SomePublisher|2003|null|C002|L001
+add-ganjineh-book#1131001|MyPass|B007|SomeGanjinehBook|SomeAuthor|SomePublisher|2003|null|C002|L001
+add-ganjineh-book#1131003|Korosu|B007|SomeGanjinehBook|SomeAuthor|SomePublisher|2003|null|C002|L001
+add-ganjineh-book#0010001|Man*&@|B006|SomeGanjinehBook|SomeAuthor|SomePublisher|2003|null|C002|L002
+add-selling-book#0010002|knB123|B007|SomeBook|AAA|SomePublisher|2016|40|50000|20|C001|L001
+add-selling-book#9731085|passWORD|B007|SomeBook|AAA|SomePublisher|2016|40|50000|20|C001|L001
+add-selling-book#1131001|MyPass|B007|SomeBook|AAA|SomePublisher|2016|40|50000|20|C001|L001
+add-selling-book#1131003|Korosu|B007|SomeBook|AAA|SomePublisher|2016|40|50000|20|C001|L001
+add-selling-book#0010001|Man*&@|B006|SomeBook|AAA|SomePublisher|2016|40|50000|20|C001|L002
+remove-resource#0010002|knB123|B001|L001
+remove-resource#9731085|passWORD|B001|L001
+remove-resource#1131001|MyPass|B001|L001
+remove-resource#1131003|Korosu|B001|L001
+remove-resource#0010001|Man*&@|B001|L002
+remove-resource#someone|Man*&@|B001|L001
+remove-resource#0010001|WrongPass|B001|L001
+remove-resource#0010001|Man*&@|B001|L004
+remove-resource#0010001|Man*&@|B008|L001
+remove-resource#0010001|Man*&@|B001|L001
+remove-resource#0010001|Man*&@|T01|L001
+remove-resource#0010001|Man*&@|B006|L001
+remove-resource#0010002|knB123|B004|L002
+remove-resource#0010001|Man*&@|B001|L001
+remove-resource#0010001|Man*&@|T01|L001
+remove-resource#0010001|Man*&@|B006|L001
+remove-resource#0010002|knB123|B004|L002
+add-book#0010001|Man*&@|B001|Introduction to Java|Author1|Publisher1|2021|5|C001|L001
+add-thesis#0010001|Man*&@|T01|Thesis1|Student1Name|Professor1Name|1399|C002|L001
+add-selling-book#0010001|Man*&@|B006|Introduction to Python|Author8|Publisher8|2016|40|50000|20|C001|L001
+add-ganjineh-book#0010002|knB123|B004|GanjinehBook3|Author7|Publisher7|2001|null|C003|L002
+finish
+
+
+success
+success
+success
+success
+success
+success
+success
+success
+success
+success
+success
+success
+success
+not-found
+invalid-pass
+not-found
+not-found
+success
+success
+success
+success
+success
+success
+not-found
+invalid-pass
+not-found
+not-found
+success
+success
+success
+not-found
+invalid-pass
+not-found
+not-found
+success
+success
+success
+not-found
+invalid-pass
+not-found
+not-found
+success
+success
+duplicate-id
+duplicate-id
+duplicate-id
+duplicate-id
+duplicate-id
+duplicate-id
+duplicate-id
+duplicate-id
+permission-denied
+permission-denied
+permission-denied
+permission-denied
+permission-denied
+permission-denied
+permission-denied
+permission-denied
+permission-denied
+permission-denied
+permission-denied
+permission-denied
+permission-denied
+permission-denied
+permission-denied
+permission-denied
+permission-denied
+permission-denied
+permission-denied
+permission-denied
+permission-denied
+permission-denied
+permission-denied
+permission-denied
+permission-denied
+not-found
+invalid-pass
+not-found
+not-found
+success
+success
+success
+success
+not-found
+not-found
+not-found
+not-found
+success
+success
+success
+success
+
+ */
 
 
 /**
