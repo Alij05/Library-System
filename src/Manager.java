@@ -1,3 +1,5 @@
+import java.util.HashMap;
+
 public class Manager extends Person {
 
     private String libraryId;
@@ -6,6 +8,7 @@ public class Manager extends Person {
         super(id, password, firstName, lastName, nationalId, birthDate, address);
         this.libraryId = libraryId;
     }
+
 
     public String getLibraryId() {
         return libraryId;

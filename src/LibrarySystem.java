@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 
 public class LibrarySystem {
@@ -7,14 +8,15 @@ public class LibrarySystem {
     private ArrayList<Category> nullCategory;
     private ArrayList<Category> allCategories;
     private ArrayList<Person> people;
-    private Person a;
-
+    private ArrayList<Resource> resources;
+    ;
     public LibrarySystem(){
         this.libraries = new ArrayList<>();
         this.categories = new ArrayList<>();
         this.nullCategory = new ArrayList<>();
         this.allCategories = new ArrayList<>();
         this.people = new ArrayList<>();
+        this.resources = new ArrayList<>();
         Admin admin = new Admin("admin", "AdminPass");
         people.add(admin);
     }
@@ -104,12 +106,12 @@ public class LibrarySystem {
             return;
         }
         for(Person i : people){
-           // if(i instanceof Student) {
-                if (i.getId().equals(studentId)) {
-                    System.out.println("duplicate-id");
-                    return;
-                }
-           // }
+            // if(i instanceof Student) {
+            if (i.getId().equals(studentId)) {
+                System.out.println("duplicate-id");
+                return;
+            }
+            // }
         }
         System.out.println("success");
         people.add(student);
@@ -185,6 +187,12 @@ public class LibrarySystem {
         System.out.println("success");
         people.add(manager);
 
+        for(Library i : libraries){
+            if(i.getLibraryId().equals(libraryId)){
+                i.setManagerOfLibrary(managerId,i);
+                break;
+            }
+        }
     }
 
     public void remove_user(String adminName, String password, String id){
@@ -222,6 +230,224 @@ public class LibrarySystem {
 
     }
 
+    public void add_book(String managerId, String password,String bookId, String title, String author, String publishers, String printYear, String amountOfCopy, String categoryId, String libraryId){
+        Book book = new Book(bookId, title, author, publishers, printYear, amountOfCopy, categoryId, libraryId);
+
+        if(check_manager(managerId, password).equals("")){
+            return;
+        }
+        if(check_library_category(categoryId,libraryId).equals("")){
+            return;
+        }
+        for(Library i : libraries){
+            if(i.getLibraryId().equals(libraryId)){
+                if(i.getBooksLibrary().containsKey(bookId)){
+                    System.out.println("duplicate-id");
+                    return;
+                }
+            }
+        }
+        for(Library i : libraries){
+            if(i.getLibraryId().equals(libraryId)){
+                if(! i.equals(i.getManagerOfLibrary().get(managerId))){
+                    System.out.println("permission-denied");
+                    return;
+                }
+            }
+        }
+        System.out.println("success");
+        resources.add(book);
+        for(Library i : libraries){
+            if(i.getLibraryId().equals(libraryId)){
+                i.setBooksLibrary(bookId,i);
+                break;
+            }
+        }
+
+    }
+
+    public void add_thesis(String managerId, String password,String thesisId, String title, String studentName, String professorName, String defenseYear, String categoryId, String libraryId){
+        Thesis thesis = new Thesis(thesisId, title, studentName, professorName, defenseYear, categoryId, libraryId);
+        if(check_manager(managerId, password).equals("")){
+            return;
+        }
+        if(check_library_category(categoryId,libraryId).equals("")){
+            return;
+        }
+        for(Library i : libraries){
+            if(i.getLibraryId().equals(libraryId)){
+                if(i.getThesesLibrary().containsKey(thesisId)){
+                    System.out.println("duplicate-id");
+                    return;
+                }
+            }
+        }
+
+        for(Library i : libraries){
+            if(i.getLibraryId().equals(libraryId)){
+                if(! i.equals(i.getManagerOfLibrary().get(managerId))){
+                    System.out.println("permission-denied");
+                    return;
+                }
+            }
+        }
+        System.out.println("success");
+        resources.add(thesis);
+        for(Library i : libraries){
+            if(i.getLibraryId().equals(libraryId)){
+                i.setThesesLibrary(thesisId,i);
+                break;
+            }
+        }
+
+    }
+
+    public void add_ganjineh(String managerId, String password,String ganjinehId, String title, String author, String publishers, String printYear, String donator, String categoryId, String libraryId) {
+        Ganjineh ganjineh = new Ganjineh(ganjinehId, title, author, publishers, printYear, donator, categoryId, libraryId);
+        if(check_manager(managerId, password).equals("")){
+            return;
+        }
+        if(check_library_category(categoryId,libraryId).equals("")){
+            return;
+        }
+        for(Library i : libraries){
+            if(i.getLibraryId().equals(libraryId)) {
+                if (i.getGanjinehLibrary().containsKey(ganjinehId)) {
+                    System.out.println("duplicate-id");
+                    return;
+                }
+            }
+        }
+
+        for(Library i : libraries){
+            if(i.getLibraryId().equals(libraryId)){
+                if(! i.equals(i.getManagerOfLibrary().get(managerId))){
+                    System.out.println("permission-denied");
+                    return;
+                }
+            }
+        }
+        System.out.println("success");
+        resources.add(ganjineh);
+        for(Library i : libraries){
+            if(i.getLibraryId().equals(libraryId)){
+                i.setGanjinehLibrary(ganjinehId,i);
+                break;
+            }
+        }
+
+    }
+
+    public void add_sellingBook(String managerId, String password,String sellingBookId, String title, String author, String publishers, String printYear, String amountOfCopy, String price, String discount, String categoryId, String libraryId){
+        SellingBook sellingBook = new SellingBook(sellingBookId, title, author, publishers, printYear, amountOfCopy, price, discount, categoryId, libraryId);
+        if(check_manager(managerId, password).equals("")){
+            return;
+        }
+        if(check_library_category(categoryId,libraryId).equals("")){
+            return;
+        }
+        for(Library i : libraries){
+            if(i.getLibraryId().equals(libraryId)) {
+                if (i.getSellingBookLibrary().containsKey(sellingBookId)) {
+                    System.out.println("duplicate-id");
+                    return;
+                }
+            }
+        }
+
+        for(Library i : libraries){
+            if(i.getLibraryId().equals(libraryId)){
+                if(! i.equals(i.getManagerOfLibrary().get(managerId))){
+                    System.out.println("permission-denied");
+                    return;
+                }
+            }
+        }
+        System.out.println("success");
+        resources.add(sellingBook);
+        for(Library i : libraries){
+            if(i.getLibraryId().equals(libraryId)){
+                i.setSellingBookLibrary(sellingBookId,i);
+                break;
+            }
+        }
+
+    }
+
+    public void remove_resource(String managerName, String password, String resourceId, String libraryId){
+        if(check_manager(managerName,password).equals("")){
+            return;
+        }
+        for(Library i : libraries){
+            if(i.getLibraryId().equals(libraryId)){
+                if(! i.equals(i.getManagerOfLibrary().get(managerName))){
+                    System.out.println("permission-denied");
+                    return;
+                }
+            }
+        }
+        Library library = null;
+        boolean flag2 = false;
+        for (Library i : libraries) {
+            if (i.getLibraryId().equals(libraryId)) {
+                flag2 = true;
+                library = i;
+                break;
+            }
+        }
+        if (!flag2) {
+            System.out.println("not-found");
+            return;
+        }
+        int flag = 0;
+        for(Resource i : resources){
+            if(i.getSourceId().equals(resourceId)){
+                flag = 1;
+                break;
+            }
+        }
+        if(flag == 0){
+            System.out.println("not-found");
+            return;
+        }
+
+        /**
+         * در صورتی که منبع در قرض کسی باشد امکان حذف
+         * آن وجود ندارد و خروجی در این حالت allowed-not خواهد بود
+         */
+
+        System.out.println("success");
+        Iterator<Resource> it = resources.iterator();
+        while (it.hasNext()){
+            Resource resource = it.next();
+            if(resource.getSourceId().equals(resourceId)){
+                it.remove();
+            }
+        }
+
+        for(Resource i : resources){
+            if(i instanceof Book){
+                library.removeBooksLibrary(resourceId,library);
+            }
+            if(i instanceof Thesis){
+                library.removeThesesLibrary(resourceId,library);
+            }
+            if(i instanceof Ganjineh){
+                library.removeGanjinehLibrary(resourceId,library);
+            }
+            if(i instanceof SellingBook){
+                library.removeSellingBookLibrary(resourceId,library);
+            }
+        }
+
+    }
+
+    public void borrow()
+
+
+
+
+
 
 
 
@@ -233,8 +459,6 @@ public class LibrarySystem {
         for(Person i : people) {
             if (!(i instanceof Admin)) {
                 if (i.getId().equals(adminName)) {
-//                    flag1 = 1;
-//                    break;
                     System.out.println("permission-denied");
                     return "";
                 }
@@ -248,8 +472,75 @@ public class LibrarySystem {
             System.out.println("not-found");
             return "";
         }
-            return "success";
-        
+        return "success";
+
+    }
+
+    public String check_manager(String managerName , String password){
+        int flag = 0 , temp = 0;
+
+        for(Person i : people){
+            if(!(i instanceof Manager)){
+                if(i.getId().equals(managerName)){
+                    System.out.println("permission-denied");
+                    return "";
+                }
+            }
+        }
+
+
+        for(Person i : people){
+            if(i instanceof Manager) {
+                if (i.getId().equals(managerName)) {
+                    flag = 1;
+                    if (i.getPassword().equals(password)) {
+                        temp = 1;
+                        break;
+                    }
+                    break;
+                }
+            }
+        }
+        if(flag == 0){
+            System.out.println("not-found");
+            return "";
+        }
+        if(temp == 0){
+            System.out.println("invalid-pass");
+            return "";
+        }
+
+        return "success";
+
+    }
+
+
+    public String check_library_category(String categoryId, String libraryId){
+        boolean flag1 = false;
+        for (Category i : allCategories) {
+            if (i.getCategoryId().equals(categoryId) || categoryId.equals("null")) {
+                flag1 = true;
+                break;
+            }
+        }
+        if (!flag1) {
+            System.out.println("not-found");
+            return "";
+        }
+
+        boolean flag2 = false;
+        for (Library i : libraries) {
+            if (i.getLibraryId().equals(libraryId)) {
+                flag2 = true;
+                break;
+            }
+        }
+        if (!flag2) {
+            System.out.println("not-found");
+            return "";
+        }
+        return "success";
+
     }
 
 }
