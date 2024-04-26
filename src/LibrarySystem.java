@@ -167,6 +167,13 @@ public class LibrarySystem {
         if(str.equals("")){
             return;
         }
+
+        for (Person i : people) {
+            if (i.getId().equals(managerId)){
+                System.out.println("duplicate-id");
+                return;
+            }
+        }
         for (Library i : libraries) {
             if (i.getLibraryId().equals(libraryId)) {
                 flag = 1;
@@ -178,12 +185,6 @@ public class LibrarySystem {
             return;
         }
 
-        for (Person i : people) {
-            if (i.getId().equals(managerId)){
-                System.out.println("duplicate-id");
-                return;
-            }
-        }
         System.out.println("success");
         people.add(manager);
 
@@ -232,6 +233,7 @@ public class LibrarySystem {
 
     public void add_book(String managerId, String password,String bookId, String title, String author, String publishers, String printYear, String amountOfCopy, String categoryId, String libraryId){
         Book book = new Book(bookId, title, author, publishers, printYear, amountOfCopy, categoryId, libraryId);
+        book.setNumberOfBooks(Integer.parseInt(amountOfCopy));
 
         if(check_manager(managerId, password).equals("")){
             return;
@@ -268,6 +270,8 @@ public class LibrarySystem {
 
     public void add_thesis(String managerId, String password,String thesisId, String title, String studentName, String professorName, String defenseYear, String categoryId, String libraryId){
         Thesis thesis = new Thesis(thesisId, title, studentName, professorName, defenseYear, categoryId, libraryId);
+        thesis.setNumberOfThesis(1);
+
         if(check_manager(managerId, password).equals("")){
             return;
         }
@@ -442,9 +446,129 @@ public class LibrarySystem {
 
     }
 
-    public void borrow()
+    public void borrow(String userId, String password, String libraryId, String itemId, String date, String time){
+        Book book = findBook(itemId);
+        Thesis thesis = findThesis(itemId);
+        if(book == null && thesis == null){
+            System.out.println("not-found");
+            return;
+        }
+        Library library = findLibrary(libraryId);
+        if(library == null){
+            System.out.println("not-found");
+            return;
+        }
+
+        Student student = findStudent(userId, password);
+        Staff staff = findStaff(userId, password);
+        Professor professor = findProfessor(userId);
+        if(staff == null && student == null && professor == null){
+            System.out.println("not-found");
+            return;
+        }
+        if(student!= null && ! student.getPassword().equals(password)){
+            System.out.println("invalid-pass");
+            return;
+        }
+        if(staff != null && ! staff.getPassword().equals(password)){
+            System.out.println("invalid-pass");
+            return;
+        }
+        if(professor != null && ! professor.getPassword().equals(password)){
+            System.out.println("invalid-pass");
+            return;
+        }
+
+        for(Resource i : resources){
+            if((i instanceof Ganjineh) && i.getSourceId().equals(itemId)){
+                System.out.println("not-allowed");
+                return;
+            }
+            if((i instanceof SellingBook) && i.getSourceId().equals(itemId)){
+                System.out.println("not-allowed");
+                return;
+            }
+        }
+        if(student != null && student.getNumberOfBorrowBooks() >= 3){
+            System.out.println("not-allowed");
+            return;
+        }
+        if(staff != null && staff.getNumberOfBorrowBooks() >= 5){
+            System.out.println("not-allowed");
+            return;
+        }
+        if(professor != null && professor.getNumberOfBorrowBooks() >= 5){
+            System.out.println("not-allowed");
+            return;
+        }
+
+        if((book != null && book.getNumberOfBooks() <= 0)){
+            System.out.println("not-allowed");
+            return;
+        }
+
+        if(student != null && book != null){
+            if(book.equals(student.getBorrowedItems().get(userId))){
+                System.out.println("not-allowed");
+                return;
+            }
+        }
+        if(staff != null && book != null){
+            if(book.equals(staff.getBorrowedItems().get(userId))){
+                System.out.println("not-allowed");
+                return;
+            }}
+        if(professor != null && book != null){
+            if(book.equals(professor.getBorrowedItems().get(userId))){
+                System.out.println("not-allowed");
+                return;
+            }
+        }
 
 
+        if((thesis!= null && thesis.getNumberOfThesis() <= 0)){
+            System.out.println("not-allowed");
+            return;
+        }
+
+
+        System.out.println("success");
+
+        if(student != null && student.getNumberOfBorrowBooks() <= 3){
+            student.setNumberOfBorrowBooks(student.getNumberOfBorrowBooks() + 1);
+            if(book != null){
+                book.setNumberOfBooks(book.getNumberOfBooks() - 1);
+                student.setBorrowedItems(itemId,book);
+            }else{
+                thesis.setNumberOfThesis(0);
+            }
+        }
+        if(staff != null && staff.getNumberOfBorrowBooks() <= 5){
+            staff.setNumberOfBorrowBooks(staff.getNumberOfBorrowBooks() + 1);
+            if(book != null){
+                book.setNumberOfBooks(book.getNumberOfBooks() - 1);
+                staff.setBorrowedItems(itemId, book);
+            }else{
+                thesis.setNumberOfThesis(0);
+            }
+        }
+        if(professor != null && professor.getNumberOfBorrowBooks() <= 5){
+            professor.setNumberOfBorrowBooks(professor.getNumberOfBorrowBooks() + 1);
+            if(book != null){
+                book.setNumberOfBooks(book.getNumberOfBooks() - 1);
+                professor.setBorrowedItems(itemId, book);
+            }else{
+                thesis.setNumberOfThesis(0);
+            }
+        }
+
+
+    }
+
+
+    public void returnSource(){
+
+    }
 
 
 
@@ -542,5 +666,82 @@ public class LibrarySystem {
         return "success";
 
     }
+
+
+    private Library findLibrary(String libraryId) {
+        for (Library library : libraries) {
+            if (library.getLibraryId().equals(libraryId)) {
+                return library;
+            }
+        }
+        return null;
+    }
+
+    private Book findBook(String bookId) {
+        for (Resource resource : resources) {
+            if(resource instanceof Book){
+                if(resource.getSourceId().equals(bookId)) {
+                    return (Book) resource;
+                }
+            }
+        }
+        return null;
+    }
+
+    private Thesis findThesis(String thesisId){
+        for (Resource resource : resources) {
+            if(resource instanceof Thesis){
+                if(resource.getSourceId().equals(thesisId)) {
+                    return (Thesis) resource;
+                }
+            }
+        }
+        return null;
+    }
+
+
+    private Student findStudent(String studentId, String password) {
+        for(Person person : people){
+            if(person instanceof Student){
+                if(person.getId().equals(studentId)){
+                    return (Student) person;
+                }
+            }
+        }
+        return null;
+    }
+
+    private Staff findStaff(String staffId, String password){
+        for(Person person : people){
+            if(person instanceof Staff){
+                if(person.getId().equals(staffId)){
+                    return (Staff) person;
+                }
+            }
+        }
+        return null;
+    }
+
+    private Professor findProfessor(String professorId){
+        for(Person person : people){
+            if(person instanceof Professor){
+                if(person.getId().equals(professorId)){
+                    return (Professor) person;
+                }
+            }
+        }
+        return null;
+    }
+
+
+    private Category findCategory(String categoryId){
+        for(Category category : categories){
+            if(category.getCategoryId().equals(categoryId)){
+                return category;
+            }
+        }
+        return null;
+    }
+
 
 }
