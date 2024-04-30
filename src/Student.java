@@ -8,6 +8,7 @@ public class Student extends Person {
         super(id, password, firstName, lastName, nationalId, birthDate, address);
         this.numberOfBorrowBooks = 0;
         this.borrowedItems = new HashMap<>();
+
     }
 
     public int getNumberOfBorrowBooks() {
@@ -18,7 +19,9 @@ public class Student extends Person {
         this.numberOfBorrowBooks = numberOfBorrowBooks;
     }
 
-//    public ArrayList<String> getBorrowedItems() {
+
+
+    //    public ArrayList<String> getBorrowedItems() {
 //        return borrowedItems;
 //    }
 //

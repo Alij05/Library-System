@@ -45,6 +45,12 @@ public class Main {
             else if(str[0].equals("borrow")){
                 center.borrow(str[1],str[2],str[3],str[4],str[5],str[6]);
             }
+            else if(str[0].equals("return")){
+                center.returnSource(str[1],str[2],str[3],str[4],str[5],str[6]);
+            }
+            else if(str[0].equals("buy")){
+                center.buy(str[1],str[2],str[3],str[4]);
+            }
 
 
 

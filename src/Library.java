@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Library {
@@ -11,6 +12,9 @@ public class Library {
     private HashMap<String,Library> ganjinehLibrary;
     private HashMap<String,Library>sellingBookLibrary;
     private HashMap<String,Library> managerOfLibrary;
+    private HashMap<String,Library> borrowFromLibrary;
+
+
 
 
     public Library(String libraryId, String libraryName, String establishedYear, int table, String address) {
@@ -24,7 +28,8 @@ public class Library {
         this.ganjinehLibrary = new HashMap<>();
         this.sellingBookLibrary = new HashMap<>();
         this.managerOfLibrary = new HashMap<>();
-    }
+        this.borrowFromLibrary = new HashMap<>();
+        }
 
 
 //    public void add_book(){
@@ -107,5 +112,13 @@ public class Library {
 
     public String getAddress() {
         return address;
+    }
+
+    public HashMap<String, Library> getBorrowFromLibrary() {
+        return borrowFromLibrary;
+    }
+
+    public void setBorrowFromLibrary(String itemId, Library library ) {
+        this.borrowFromLibrary.put(itemId,library);
     }
 }
